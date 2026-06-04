@@ -21,19 +21,19 @@ func Execute() {
 		Short:	"Scan the local network for Roku devices",
 		Long:	"Broadcast an SSDP M-SEARCH packet over UDP to find the IP addresses of any Roku devices",
 		Run:	func(cmd *cobra.Command, args []string) {
-			fmt.Println("Broadcasting SSDP discovery packet over local subnet...")
+			fmt.Println("📡 Broadcasting SSDP discovery packet over local subnet...")
 
 			foundIP, err := discovery.ScanForRoku()
 			if err != nil {
-				fmt.Printf("Scan failed: %v\n", err)
+				fmt.Printf("❌ Scan failed: %v\n", err)
 				os.Exit(1)
 			}
 
-			fmt.Println("\nDiscovery Successful")
+			fmt.Println("\n✅ Discovery Successful")
 			fmt.Printf("=========================\n")
-			fmt.Printf("Device Type:	Roku TV / ECP Target\n")
-			fmt.Printf("IP Address:		%s\n", foundIP)
-			fmt.Printf("Target URL:		http://%s:8060\n", foundIP)
+			fmt.Printf("Roku TV / ECP Target\n")
+			fmt.Printf("🌐 IP Address:	%s\n", foundIP)
+			fmt.Printf("🔗 Target URL:	http://%s:8060\n", foundIP)
 			fmt.Printf("=========================\n")
 		},
 	}

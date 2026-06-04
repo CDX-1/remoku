@@ -14,6 +14,7 @@ func RunInteractiveMode(rokuIP string, timeout time.Duration) (error) {
 	fmt.Println("🚀 Real-time control active! (Press 'q' or Ctrl+C to exit)\r")
 	fmt.Println("Commands: W = Up, A = Left, S = Down, D = Right\r")
 	fmt.Println("          [Enter] = Select, [Backspace] = Back, [Spacebar] = Home\r")
+	fmt.Println("          J = Volume Up, K = Volume Down, M = Mute\r")
 	fmt.Println("====================================================\r")
 
 	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
@@ -41,6 +42,12 @@ func RunInteractiveMode(rokuIP string, timeout time.Duration) (error) {
 			rokuKey = "Down"
 		case 'd', 'D':
 			rokuKey = "Right"
+		case 'j', 'J':
+			rokuKey = "VolumeUp"
+		case 'k', 'K':
+			rokuKey = "VolumeDown"
+		case 'm', 'M':
+			rokuKey = "VolumeMute"
 		case 13, 10: // Enter
 			rokuKey = "Select"
 		case 8, 127: // Backspace
@@ -55,10 +62,14 @@ func RunInteractiveMode(rokuIP string, timeout time.Duration) (error) {
 		}
 
 		fmt.Printf("\r📦 Sending keypress: %-10s", rokuKey)
+
+		start := time.Now()
 		err = ecp.PostECP(rokuIP, timeout, "keypress/" + rokuKey)
+		duration := time.Since(start)
 		if err != nil {
-			fmt.Printf("\nfailed to send keypress: %v\r\n", err)
+			fmt.Printf("❌ failed to send keypress: %v\r\n", err)
 		}
+		fmt.Printf("\r🟢 Sent keypress: %-10s (duration: %s)\r\n", rokuKey, duration.Truncate(time.Millisecond))
 	}
 
 	return nil

@@ -3,7 +3,7 @@ package remote
 import (
 	"fmt"
 	"os"
-	"remoku/internal/ecp"
+	"github.com/CDX-1/remoku/internal/ecp"
 	"time"
 
 	"golang.org/x/term"

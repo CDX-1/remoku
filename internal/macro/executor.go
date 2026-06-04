@@ -2,7 +2,7 @@ package macro
 
 import (
 	"fmt"
-	"remoku/internal/ecp"
+	"github.com/CDX-1/remoku/internal/ecp"
 	"time"
 )
 

@@ -3,9 +3,9 @@ package remote
 import (
 	"fmt"
 	"os"
-	"remoku/internal/discovery"
-	"remoku/internal/ecp"
-	"remoku/internal/macro"
+	"github.com/CDX-1/remoku/internal/discovery"
+	"github.com/CDX-1/remoku/internal/ecp"
+	"github.com/CDX-1/remoku/internal/macro"
 	"strings"
 	"time"
 

@@ -35,25 +35,25 @@ func RunInteractiveMode(rokuIP string, timeout time.Duration) (error) {
 
 		switch char {
 		case 'w', 'W':
-			rokuKey = "Up"
+			rokuKey = "up"
 		case 'a', 'A':
-			rokuKey = "Left"
+			rokuKey = "left"
 		case 's', 'S':
-			rokuKey = "Down"
+			rokuKey = "down"
 		case 'd', 'D':
-			rokuKey = "Right"
+			rokuKey = "right"
 		case 'j', 'J':
-			rokuKey = "VolumeUp"
+			rokuKey = "vup"
 		case 'k', 'K':
-			rokuKey = "VolumeDown"
+			rokuKey = "vdown"
 		case 'm', 'M':
-			rokuKey = "VolumeMute"
+			rokuKey = "mute"
 		case 13, 10: // Enter
-			rokuKey = "Select"
+			rokuKey = "select"
 		case 8, 127: // Backspace
-			rokuKey = "Back"
+			rokuKey = "back"
 		case ' ':
-			rokuKey = "Home"
+			rokuKey = "home"
 		case 'q', 'Q', 3:
 			fmt.Printf("\n🚪 Exiting interactive mode.\r\n")
 			return nil
@@ -64,7 +64,7 @@ func RunInteractiveMode(rokuIP string, timeout time.Duration) (error) {
 		fmt.Printf("\r📦 Sending keypress: %-10s", rokuKey)
 
 		start := time.Now()
-		err = ecp.PostECP(rokuIP, timeout, "keypress/" + rokuKey)
+		err = ecp.SendKeyPress(rokuIP, timeout, rokuKey)
 		duration := time.Since(start)
 		if err != nil {
 			fmt.Printf("❌ failed to send keypress: %v\r\n", err)

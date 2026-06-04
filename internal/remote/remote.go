@@ -97,7 +97,55 @@ func Execute() {
 		},
 	}
 
-	rootCmd.AddCommand(scanCmd, pressCmd, interactiveCmd)
+	var appsCmd = &cobra.Command{
+		Use:   "apps",
+		Short: "Lists installed applications",
+		Long:  "Retrieves and displays a list of all installed applications on the Roku TV.",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("📋 Fetching installed applications...")
+
+			apps, err := ecp.GetApps(rokuIP, timeout)
+			if err != nil {
+				fmt.Printf("❌ Failed to fetch apps: %v\n", err)
+				os.Exit(1)
+			}
+
+			fmt.Println("✅ Apps list retrieved successfully!")
+			fmt.Printf("=========================\n")
+			
+			for _, app := range apps {
+				fmt.Printf("App: %s\n", app.Name)
+				fmt.Printf("ID: %s\n", app.ID)
+				fmt.Printf("Type: %s\n", app.Type)
+				fmt.Printf("Version: %s\n", app.Version)
+				fmt.Printf("\n")
+			}
+
+			fmt.Printf("=========================\n")
+
+			fmt.Println("🚀 Launch any of these apps with 'remoku launch <appId>'")
+		},
+	}
+
+	var launchCmd = &cobra.Command{
+		Use:   "launch",
+		Short: "Launch an application",
+		Long:  "Launches the specified application on the Roku TV.",
+		Run: func(cmd *cobra.Command, args []string) {
+			appId := args[0]
+			fmt.Printf("🚀 Launching application: %s...\n", appId)
+
+			err := ecp.LaunchApp(rokuIP, timeout, appId)
+			if err != nil {
+				fmt.Printf("❌ Failed to launch app: %v\n", err)
+				os.Exit(1)
+			}
+
+			fmt.Println("✅ App launched successfully!")
+		},
+	}
+
+	rootCmd.AddCommand(scanCmd, pressCmd, interactiveCmd, appsCmd, launchCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)

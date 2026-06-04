@@ -32,3 +32,11 @@ func SendKeyPress(rokuIP string, timeout time.Duration, key string) error {
 
 	return PostECP(rokuIP, timeout, "keypress/"+mappedKey)
 }
+
+func LaunchApp(rokuIP string, timeout time.Duration, appId string) error {
+	err := PostECP(rokuIP, timeout, "launch/"+appId)
+	if err != nil {
+		fmt.Errorf("failed to launch app: %v\r\n", err)
+	}
+	return nil
+}

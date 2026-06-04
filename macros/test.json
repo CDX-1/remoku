@@ -1,0 +1,18 @@
+[
+    {
+        "type": "keypress",
+        "value": "down"
+    },
+    {
+        "type": "keypress",
+        "value": "right"
+    },
+    {
+        "type": "sleep",
+        "duration": 5000
+    },
+    {
+        "type": "launch",
+        "value": "tvinput.hdmi2"
+    }
+]

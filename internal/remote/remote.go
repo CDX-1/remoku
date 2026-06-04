@@ -5,6 +5,7 @@ import (
 	"os"
 	"remoku/internal/discovery"
 	"remoku/internal/ecp"
+	"remoku/internal/macro"
 	"strings"
 	"time"
 
@@ -145,7 +146,35 @@ func Execute() {
 		},
 	}
 
-	rootCmd.AddCommand(scanCmd, pressCmd, interactiveCmd, appsCmd, launchCmd)
+	var macroCmd = &cobra.Command{
+		Use:	"macro",
+		Short:	"Execute a macro JSON file",
+		Long:	"Executes a specified JSON file as a macro",
+		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) == 0 {
+				fmt.Println("❌ No macro file specified")
+				os.Exit(1)
+			}
+			filePath := args[0]
+			
+			actions, err := macro.LoadMacroFromFile(filePath)
+			if err != nil {
+				fmt.Printf("❌ Failed to load macro: %v\n", err)
+				os.Exit(1)
+			}
+
+			fmt.Println("⌛ Executing macro...")
+			err = macro.ExecuteActions(rokuIP, timeout, actions, 100 * time.Millisecond)
+			if err != nil {
+				fmt.Printf("❌ Failed to execute macro: %v\n", err)
+				os.Exit(1)
+			}
+
+			fmt.Println("✅ Macro executed successfully!")
+		},
+	}
+
+	rootCmd.AddCommand(scanCmd, pressCmd, interactiveCmd, appsCmd, launchCmd, macroCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)

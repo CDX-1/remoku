@@ -2,6 +2,8 @@
 
 A CLI tool for controlling Roku devices over a local network.
 
+[Here is a video demo.](https://www.youtube.com/watch?v=Pt1i_EhmWlQ&feature=youtu.be)
+
 ## Features
 
 - Scan your network for Roku devices using the SSDP protocol
